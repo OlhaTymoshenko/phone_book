@@ -80,4 +80,37 @@ public class Repository {
         database.close();
         EventBus.getDefault().post(new ContactsUpdatedEvent());
     }
+
+    public ArrayList<Contact> findContactsbyId(String id) {
+        SQLiteDatabase database = phoneBookDBHelper.getReadableDatabase();
+        String selection = PhoneBookContract.ContactEntry.COLUMN_NAME_CONTACT_ID + " =?";
+        String[] selectionArgs = {id};
+        Cursor cursor = database.query(
+                PhoneBookContract.ContactEntry.TABLE_NAME,
+                null,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+        ArrayList<Contact> contacts = readContactsFromCursor(cursor);
+        cursor.close();
+        database.close();
+        return contacts;
+    }
+
+    public void updateContact(String id, String name, String lastName, String phone) {
+        SQLiteDatabase database = phoneBookDBHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PhoneBookContract.ContactEntry.COLUMN_NAME_CONTACT_NAME, name);
+        values.put(PhoneBookContract.ContactEntry.COLUMN_NAME_CONTACT_LAST_NAME, lastName);
+        values.put(PhoneBookContract.ContactEntry.COLUMN_NAME_CONTACT_PHONE, phone);
+        String whereClause = PhoneBookContract.ContactEntry.COLUMN_NAME_CONTACT_ID + " =?";
+        String[] whereArgs = {id};
+        database.update(PhoneBookContract.ContactEntry.TABLE_NAME, values, whereClause, whereArgs);
+        database.close();
+        EventBus.getDefault().post(new ContactsUpdatedEvent());
+    }
+
 }

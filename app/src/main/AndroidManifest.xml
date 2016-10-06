@@ -35,6 +35,10 @@
             android:name=".AddNewContactService"
             android:exported="false">
         </service>
+        <service
+            android:name=".EditContactService"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>

@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
                 new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
             }
         }));
         getLoaderManager().initLoader(LOADER_ID, null, new LoaderManager.LoaderCallbacks<ArrayList<Contact>>() {
