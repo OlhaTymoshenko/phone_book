@@ -13,4 +13,7 @@
     <string name="error_invalid_phone">Invalid phone number</string>
     <string name="error_short_last_name">Last name is too short</string>
     <string name="error_short_name">Name is too short</string>
+    <string name="dialog_delete_contact">Contact will be deleted</string>
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
 </resources>

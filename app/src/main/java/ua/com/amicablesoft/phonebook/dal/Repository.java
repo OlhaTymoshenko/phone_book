@@ -113,4 +113,12 @@ public class Repository {
         EventBus.getDefault().post(new ContactsUpdatedEvent());
     }
 
+    public void deleteContact(String id) {
+        SQLiteDatabase database = phoneBookDBHelper.getWritableDatabase();
+        String whereClause = PhoneBookContract.ContactEntry.COLUMN_NAME_CONTACT_ID + " =?";
+        String[] whereArgs = {id};
+        database.delete(PhoneBookContract.ContactEntry.TABLE_NAME, whereClause, whereArgs);
+        database.close();
+        EventBus.getDefault().post(new ContactsUpdatedEvent());
+    }
 }

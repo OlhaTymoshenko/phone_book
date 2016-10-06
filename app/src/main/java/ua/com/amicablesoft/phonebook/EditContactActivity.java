@@ -1,10 +1,10 @@
 package ua.com.amicablesoft.phonebook;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import ua.com.amicablesoft.phonebook.dal.Repository;
 import ua.com.amicablesoft.phonebook.model.Contact;
 
-public class EditContactActivity extends AppCompatActivity {
+public class EditContactActivity extends AppCompatActivity
+        implements DeleteContactDialogFragment.ItemDialogListener{
 
     private String id;
 
@@ -48,13 +49,21 @@ public class EditContactActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_delete:
-
+                new DeleteContactDialogFragment().show(getFragmentManager(), "dialog");
                 return true;
             case R.id.action_done:
                 attemptSaveEditedContact();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onOKButtonClick() {
+        Intent intent = new Intent(this, DeleteContactService.class);
+        intent.putExtra("id", id);
+        startService(intent);
+        finish();
     }
 
     private void setContact() {
