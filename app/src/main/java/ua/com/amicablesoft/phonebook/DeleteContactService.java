@@ -20,5 +20,7 @@ public class DeleteContactService extends IntentService{
         String id = intent.getStringExtra("id");
         Repository repository = new Repository(getApplicationContext());
         repository.deleteContact(id);
+        Intent intent1 = new Intent(MainActivity.BROADCAST_ACTION);
+        sendBroadcast(intent1);
     }
 }

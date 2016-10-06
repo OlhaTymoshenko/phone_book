@@ -1,11 +1,15 @@
 package ua.com.amicablesoft.phonebook;
 
 import android.app.LoaderManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +29,9 @@ import ua.com.amicablesoft.phonebook.model.Contact;
 
 public class MainActivity extends AppCompatActivity {
 
+    private BroadcastReceiver broadcastReceiver;
     private static final int LOADER_ID = 1;
+    public static final String BROADCAST_ACTION = "contact_is_deleted";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +76,21 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Snackbar.make(findViewById(R.id.activity_main), R.string.snackbar_deleted_contact,
+                        Snackbar.LENGTH_SHORT).show();
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter(BROADCAST_ACTION);
+        registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
     }
 
     @Override

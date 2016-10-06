@@ -16,4 +16,5 @@
     <string name="dialog_delete_contact">Contact will be deleted</string>
     <string name="button_ok">OK</string>
     <string name="button_cancel">Cancel</string>
+    <string name="snackbar_deleted_contact">Contact was deleted</string>
 </resources>
