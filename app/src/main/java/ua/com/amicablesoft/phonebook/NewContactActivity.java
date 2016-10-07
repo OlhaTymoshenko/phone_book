@@ -1,9 +1,21 @@
 package ua.com.amicablesoft.phonebook;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -11,8 +23,23 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
-public class NewContactActivity extends AppCompatActivity {
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import ua.com.amicablesoft.phonebook.service.AddNewContactService;
+
+public class NewContactActivity extends AppCompatActivity
+        implements ChangePhotoDialogFragment.ChangePhotoDialogListener {
+
+    private ImageView imageView;
+    private String picturePath;
+    static final int PERMISSIONS_REQUEST = 1;
+    static final int REQUEST_PHOTO_CAPTURE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +49,13 @@ public class NewContactActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        imageView = (ImageView) findViewById(R.id.contact_image_view);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ChangePhotoDialogFragment().show(getFragmentManager(), "single_choice");
+            }
+        });
     }
 
     @Override
@@ -42,6 +76,57 @@ public class NewContactActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onTakePhotoClick() {
+        if ((ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) &&
+                (ContextCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                        PackageManager.PERMISSION_GRANTED)) {
+            try {
+                takePhoto();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            ActivityCompat.requestPermissions(NewContactActivity.this,
+                    new String[] {Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSIONS_REQUEST);
+        }
+    }
+
+    @Override
+    public void onChoosePhotoClick() {
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            try {
+                takePhoto();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Snackbar.make(findViewById(R.id.activity_new_contact), R.string.snackbar_permissions,
+                    Snackbar.LENGTH_SHORT).show();
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_PHOTO_CAPTURE) {
+            if (resultCode == RESULT_OK && data != null) {
+                Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
+                imageView.setImageBitmap(bitmap);
+            }
+        }
     }
 
     private void attemptSaveNewContact() {
@@ -109,5 +194,30 @@ public class NewContactActivity extends AppCompatActivity {
 
     private boolean isNameValid(String name) {
         return name.length() > 1;
+    }
+
+    private void takePhoto() throws IOException {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            File photoPath = getApplicationContext()
+                    .getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            assert photoPath != null;
+            if (!photoPath.exists()) {
+                photoPath.mkdirs();
+            }
+            String fileName = createPictureName();
+            File photoFile = new File(photoPath, fileName);
+            picturePath = photoFile.getAbsolutePath();
+            Uri contentUri = FileProvider.getUriForFile(getApplicationContext(),
+                    "ua.com.amicablesoft.phonebook.fileprovider", photoFile);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
+            intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION & Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivityForResult(intent, REQUEST_PHOTO_CAPTURE);
+        }
+    }
+
+    private String createPictureName() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        return timeStamp + ".jpg";
     }
 }

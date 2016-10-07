@@ -1,15 +1,16 @@
-package ua.com.amicablesoft.phonebook;
+package ua.com.amicablesoft.phonebook.service;
 
 import android.app.IntentService;
 import android.content.Intent;
 
+import ua.com.amicablesoft.phonebook.MainActivity;
 import ua.com.amicablesoft.phonebook.dal.Repository;
 
 /**
  * Created by lapa on 06.10.16.
  */
 
-public class DeleteContactService extends IntentService{
+public class DeleteContactService extends IntentService {
 
     public DeleteContactService() {
         super("DeleteContactService");

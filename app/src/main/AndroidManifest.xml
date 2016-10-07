@@ -2,6 +2,10 @@
 <manifest package="ua.com.amicablesoft.phonebook"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -32,17 +36,27 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <service
-            android:name=".AddNewContactService"
+            android:name=".service.AddNewContactService"
             android:exported="false">
         </service>
         <service
-            android:name=".EditContactService"
+            android:name=".service.EditContactService"
             android:exported="false">
         </service>
         <service
-            android:name=".DeleteContactService"
+            android:name=".service.DeleteContactService"
             android:exported="false">
         </service>
+        <provider
+            android:authorities="ua.com.amicablesoft.phonebook.fileprovider"
+            android:name="android.support.v4.content.FileProvider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths">
+            </meta-data>
+        </provider>
     </application>
 
 </manifest>

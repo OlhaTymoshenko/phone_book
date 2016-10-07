@@ -14,7 +14,10 @@
     <string name="error_short_last_name">Last name is too short</string>
     <string name="error_short_name">Name is too short</string>
     <string name="dialog_delete_contact">Contact will be deleted</string>
+    <string name="title_change_photo_dialog">Change photo</string>
     <string name="button_ok">OK</string>
     <string name="button_cancel">Cancel</string>
     <string name="snackbar_deleted_contact">Contact was deleted</string>
+    <string name="snackbar_permissions">This action requires permissions</string>
+
 </resources>

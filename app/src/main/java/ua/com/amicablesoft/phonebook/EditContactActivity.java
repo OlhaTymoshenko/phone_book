@@ -16,9 +16,11 @@ import java.util.ArrayList;
 
 import ua.com.amicablesoft.phonebook.dal.Repository;
 import ua.com.amicablesoft.phonebook.model.Contact;
+import ua.com.amicablesoft.phonebook.service.DeleteContactService;
+import ua.com.amicablesoft.phonebook.service.EditContactService;
 
 public class EditContactActivity extends AppCompatActivity
-        implements DeleteContactDialogFragment.ItemDialogListener{
+        implements DeleteContactDialogFragment.DeleteContactDialogListener {
 
     private String id;
 
