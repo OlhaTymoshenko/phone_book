@@ -10,25 +10,29 @@
     android:background="@drawable/bg_item_common"
     android:clickable="true">
 
-    <RelativeLayout
-        android:layout_width="40dp"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical">
-
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/contact_photo"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_account_circle_grey600_36dp"/>
-
-    </RelativeLayout>
+            android:src="@drawable/ic_account_circle_grey600_36dp"
+            android:layout_gravity="center_vertical"/>
 
     <TextView
         android:id="@+id/item_text_view"
         style="@style/ItemTextFont"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/activity_vertical_margin">
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_vertical_margin">
     </TextView>
+
+    <ImageView
+        android:id="@+id/call_image_view"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_call_grey600_24dp"/>
+
 </LinearLayout>

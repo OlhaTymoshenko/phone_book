@@ -46,6 +46,7 @@ public class EditContactActivity extends AppCompatActivity
     private String picturePath;
     private static final int PERMISSIONS_REQUEST = 1;
     private static final int REQUEST_PHOTO_CAPTURE = 0;
+    private static final int CHOOSE_PHOTO = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +121,9 @@ public class EditContactActivity extends AppCompatActivity
 
     @Override
     public void onChoosePhotoClick() {
-
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "Select photo"), CHOOSE_PHOTO);
     }
 
     @Override
