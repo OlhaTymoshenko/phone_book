@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -22,6 +21,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -158,8 +160,9 @@ public class MainActivity extends AppCompatActivity {
             Contact contact = contacts.get(position);
             String photoPath = contact.getPhotoPath();
             if (photoPath != null) {
-                Uri uri = new Uri.Builder().path(contact.getPhotoPath()).build();
-                holder.circleImageView.setImageURI(uri);
+                Picasso.with(getApplicationContext()).load(new File(photoPath))
+                        .resize(holder.circleImageView.getLayoutParams().width, holder.circleImageView.getLayoutParams().height)
+                        .centerCrop().transform(CropCircleTransformation.INSTANCE).into(holder.circleImageView);
             } else {
                 holder.circleImageView.setImageResource(R.drawable.ic_account_circle_grey600_36dp);
             }
