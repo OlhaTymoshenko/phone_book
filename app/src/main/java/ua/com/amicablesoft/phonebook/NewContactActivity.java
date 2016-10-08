@@ -3,8 +3,6 @@ package ua.com.amicablesoft.phonebook;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,6 +22,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -122,9 +122,9 @@ public class NewContactActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_PHOTO_CAPTURE) {
-            if (resultCode == RESULT_OK && data != null) {
-                Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-                imageView.setImageBitmap(bitmap);
+            if (resultCode == RESULT_OK) {
+                Picasso.with(getApplicationContext()).load(new File(picturePath))
+                        .resize(0, imageView.getLayoutParams().height).into(imageView);
             }
         }
     }
@@ -179,6 +179,7 @@ public class NewContactActivity extends AppCompatActivity
             intent.putExtra("name", name);
             intent.putExtra("last_name", lastName);
             intent.putExtra("phone", phone);
+            intent.putExtra("photo_path", picturePath);
             startService(intent);
             finish();
         }

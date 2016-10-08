@@ -156,7 +156,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             Contact contact = contacts.get(position);
-            if (contact.getPhotoPath() != null) {
+            String photoPath = contact.getPhotoPath();
+            if (photoPath != null) {
                 Uri uri = new Uri.Builder().path(contact.getPhotoPath()).build();
                 holder.circleImageView.setImageURI(uri);
             } else {

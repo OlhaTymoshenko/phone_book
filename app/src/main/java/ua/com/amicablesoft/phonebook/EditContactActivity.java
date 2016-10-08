@@ -11,7 +11,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 import java.util.ArrayList;
 
 import ua.com.amicablesoft.phonebook.dal.Repository;
@@ -78,6 +82,11 @@ public class EditContactActivity extends AppCompatActivity
         lastNameView.setText(contact.getLastName());
         TextInputEditText phoneView = (TextInputEditText) findViewById(R.id.edit_phone_edit_text);
         phoneView.setText(contact.getPhone());
+        ImageView imageView = (ImageView) findViewById(R.id.edit_contact_image_view);
+        Picasso.with(getApplicationContext()).load(new File(contact.getPhotoPath()))
+                .resize(0, imageView.getLayoutParams().height).into(imageView);
+//        Bitmap bitmap = BitmapFactory.decodeFile(contact.getPhotoPath());
+//        imageView.setImageBitmap(bitmap);
     }
 
     private void attemptSaveEditedContact() {

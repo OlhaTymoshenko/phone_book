@@ -23,8 +23,9 @@ public class AddNewContactService extends IntentService {
         String name = intent.getStringExtra("name");
         String lastName = intent.getStringExtra("last_name");
         String phone = intent.getStringExtra("phone");
+        String photoPath = intent.getStringExtra("photo_path");
         String id = UUID.randomUUID().toString();
-        Contact contact = new Contact(id, name, lastName, phone, null);
+        Contact contact = new Contact(id, name, lastName, phone, photoPath);
         Repository repository = new Repository(getApplicationContext());
         repository.addContact(contact);
     }
