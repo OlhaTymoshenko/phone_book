@@ -26,13 +26,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import ua.com.amicablesoft.phonebook.service.AddNewContactService;
 
@@ -41,6 +35,7 @@ public class NewContactActivity extends AppCompatActivity
 
     private ImageView imageView;
     private String picturePath;
+    private PhotoHelper photoHelper;
     private static final int PERMISSIONS_REQUEST = 1;
     private static final int REQUEST_PHOTO_CAPTURE = 0;
     private static final int CHOOSE_PHOTO = 1;
@@ -61,6 +56,7 @@ public class NewContactActivity extends AppCompatActivity
                 new ChangePhotoDialogFragment().show(getFragmentManager(), "single_choice");
             }
         });
+        photoHelper = new PhotoHelper();
     }
 
     @Override
@@ -114,7 +110,6 @@ public class NewContactActivity extends AppCompatActivity
                             Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     READ_PERMISSIONS_REQUEST);
         }
-
     }
 
     @Override
@@ -154,7 +149,7 @@ public class NewContactActivity extends AppCompatActivity
                 }
                 String fileName = null;
                 try {
-                    fileName = createPictureName();
+                    fileName = photoHelper.createPictureName();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -163,7 +158,7 @@ public class NewContactActivity extends AppCompatActivity
                 picturePath = photoFile.getAbsolutePath();
                 File srcFile = new File (URIUtils.getPath(getApplicationContext(), uri));
                 try {
-                    copy(srcFile, photoFile);
+                    photoHelper.copy(srcFile, photoFile);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -250,7 +245,7 @@ public class NewContactActivity extends AppCompatActivity
             if (!photoPath.exists()) {
                 photoPath.mkdirs();
             }
-            String fileName = createPictureName();
+            String fileName = photoHelper.createPictureName();
             File photoFile = new File(photoPath, fileName);
             picturePath = photoFile.getAbsolutePath();
             Uri contentUri = FileProvider.getUriForFile(getApplicationContext(),
@@ -259,21 +254,6 @@ public class NewContactActivity extends AppCompatActivity
             intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION & Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivityForResult(intent, REQUEST_PHOTO_CAPTURE);
         }
-    }
-
-    private String createPictureName() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        return timeStamp + ".jpg";
-    }
-
-    public void copy(File src, File dst) throws IOException {
-        FileInputStream inStream = new FileInputStream(src);
-        FileOutputStream outStream = new FileOutputStream(dst);
-        FileChannel inChannel = inStream.getChannel();
-        FileChannel outChannel = outStream.getChannel();
-        inChannel.transferTo(0, inChannel.size(), outChannel);
-        inStream.close();
-        outStream.close();
     }
 
     private void choosePhoto() {

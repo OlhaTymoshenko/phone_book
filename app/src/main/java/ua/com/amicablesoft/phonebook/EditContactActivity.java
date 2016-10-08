@@ -27,10 +27,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 import ua.com.amicablesoft.phonebook.dal.Repository;
 import ua.com.amicablesoft.phonebook.model.Contact;
@@ -44,9 +41,11 @@ public class EditContactActivity extends AppCompatActivity
     private String id;
     private ImageView imageView;
     private String picturePath;
+    private PhotoHelper photoHelper;
     private static final int PERMISSIONS_REQUEST = 1;
     private static final int REQUEST_PHOTO_CAPTURE = 0;
     private static final int CHOOSE_PHOTO = 1;
+    private static final int READ_PERMISSIONS_REQUEST = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +64,7 @@ public class EditContactActivity extends AppCompatActivity
                 new ChangePhotoDialogFragment().show(getFragmentManager(), "single_choice");
             }
         });
+        photoHelper = new PhotoHelper();
         setContact();
     }
 
@@ -121,19 +121,27 @@ public class EditContactActivity extends AppCompatActivity
 
     @Override
     public void onChoosePhotoClick() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(Intent.createChooser(intent, "Select photo"), CHOOSE_PHOTO);
+        if ((ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
+            choosePhoto();
+        } else {
+            ActivityCompat.requestPermissions(EditContactActivity.this,
+                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    READ_PERMISSIONS_REQUEST);
+        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && requestCode == PERMISSIONS_REQUEST) {
             try {
                 takePhoto();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && requestCode == READ_PERMISSIONS_REQUEST) {
+            choosePhoto();
         } else {
             Snackbar.make(findViewById(R.id.activity_new_contact), R.string.snackbar_permissions,
                     Snackbar.LENGTH_SHORT).show();
@@ -146,6 +154,34 @@ public class EditContactActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_PHOTO_CAPTURE) {
             if (resultCode == RESULT_OK) {
+                Picasso.with(getApplicationContext()).load(new File(picturePath))
+                        .resize(0, imageView.getLayoutParams().height).into(imageView);
+            }
+        }
+        if (requestCode == CHOOSE_PHOTO) {
+            if (resultCode == RESULT_OK && data != null) {
+                Uri uri = data.getData();
+                File photoPath = getApplicationContext()
+                        .getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                assert photoPath != null;
+                if (!photoPath.exists()) {
+                    photoPath.mkdirs();
+                }
+                String fileName = null;
+                try {
+                    fileName = photoHelper.createPictureName();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                assert fileName != null;
+                File photoFile = new File(photoPath, fileName);
+                picturePath = photoFile.getAbsolutePath();
+                File srcFile = new File (URIUtils.getPath(getApplicationContext(), uri));
+                try {
+                    photoHelper.copy(srcFile, photoFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Picasso.with(getApplicationContext()).load(new File(picturePath))
                         .resize(0, imageView.getLayoutParams().height).into(imageView);
             }
@@ -246,7 +282,7 @@ public class EditContactActivity extends AppCompatActivity
             if (!photoPath.exists()) {
                 photoPath.mkdirs();
             }
-            String fileName = createPictureName();
+            String fileName = photoHelper.createPictureName();
             File photoFile = new File(photoPath, fileName);
             picturePath = photoFile.getAbsolutePath();
             Uri contentUri = FileProvider.getUriForFile(getApplicationContext(),
@@ -257,8 +293,9 @@ public class EditContactActivity extends AppCompatActivity
         }
     }
 
-    private String createPictureName() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        return timeStamp + ".jpg";
+    private void choosePhoto() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "Select photo"), CHOOSE_PHOTO);
     }
 }
