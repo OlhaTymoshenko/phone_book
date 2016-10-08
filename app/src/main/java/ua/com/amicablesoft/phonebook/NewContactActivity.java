@@ -106,8 +106,7 @@ public class NewContactActivity extends AppCompatActivity
             choosePhoto();
         } else {
             ActivityCompat.requestPermissions(NewContactActivity.this,
-                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},
                     READ_PERMISSIONS_REQUEST);
         }
     }

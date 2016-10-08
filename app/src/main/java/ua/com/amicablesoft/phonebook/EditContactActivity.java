@@ -126,8 +126,7 @@ public class EditContactActivity extends AppCompatActivity
             choosePhoto();
         } else {
             ActivityCompat.requestPermissions(EditContactActivity.this,
-                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},
                     READ_PERMISSIONS_REQUEST);
         }
     }

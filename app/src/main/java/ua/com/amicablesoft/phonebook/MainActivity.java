@@ -1,14 +1,20 @@
 package ua.com.amicablesoft.phonebook;
 
+import android.Manifest;
 import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,8 +38,10 @@ import ua.com.amicablesoft.phonebook.model.Contact;
 public class MainActivity extends AppCompatActivity {
 
     private BroadcastReceiver broadcastReceiver;
+    private static Contact contact;
     private static final int LOADER_ID = 1;
     public static final String BROADCAST_ACTION = "contact_is_deleted";
+    private static final int PERMISSION_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +58,36 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        final ItemAdapter itemAdapter = new ItemAdapter();
+        final ItemAdapter itemAdapter = new ItemAdapter(getApplicationContext());
+        itemAdapter.setOnContactEditListener(new ItemAdapter.OnContactEditListener() {
+            @Override
+            public void onContactEdit(Contact contact) {
+                Intent intent = new Intent(MainActivity.this, EditContactActivity.class);
+                String id = contact.getId();
+                intent.putExtra("id", id);
+                startActivity(intent);
+            }
+        });
+        itemAdapter.setOnContactCallListener(new ItemAdapter.OnContactCallListener() {
+            @Override
+            public void onContactCall(Contact contact) {
+                if ((ContextCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED)) {
+                    callToContact(contact);
+                } else {
+                    MainActivity.contact = contact;
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{Manifest.permission.CALL_PHONE},
+                            PERMISSION_REQUEST);
+                }
+
+            }
+        });
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(itemAdapter);
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(),
-                new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-            }
-        }));
+
         getLoaderManager().initLoader(LOADER_ID, null, new LoaderManager.LoaderCallbacks<ArrayList<Contact>>() {
             @Override
             public Loader<ArrayList<Contact>> onCreateLoader(int id, Bundle args) {
@@ -96,6 +123,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("contact", contact);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -117,23 +150,68 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            callToContact(contact);
+            contact = null;
+        } else {
+            Snackbar.make(findViewById(R.id.activity_new_contact), R.string.snackbar_permissions,
+                    Snackbar.LENGTH_SHORT).show();
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void callToContact(Contact contact) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + contact.getPhone()));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
     /**
      * Created by lapa on 04.10.16.
      */
-    public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+    public static class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
         private final List<Contact> contacts = new ArrayList<>();
+        private OnContactEditListener onContactEditListener;
+        private OnContactCallListener onContactCallListener;
+        private Context context;
+
+        public ItemAdapter(Context context) {
+            this.context = context;
+        }
+
+        public void setOnContactEditListener(OnContactEditListener onContactEditListener) {
+            this.onContactEditListener = onContactEditListener;
+        }
+
+        public void setOnContactCallListener(OnContactCallListener onContactCallListener) {
+            this.onContactCallListener = onContactCallListener;
+        }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             final ImageView circleImageView;
             final TextView textView;
+            final ImageView callImageView;
             Contact contact;
 
             public ViewHolder(View view) {
                 super(view);
                 circleImageView = (ImageView) view.findViewById(R.id.contact_photo);
                 textView = (TextView) view.findViewById(R.id.item_text_view);
+                callImageView = (ImageView) view.findViewById(R.id.call_image_view);
             }
+        }
+
+        public interface OnContactEditListener {
+            void onContactEdit(Contact contact);
+        }
+
+        public interface OnContactCallListener {
+            void onContactCall(Contact contact);
         }
 
         @Override
@@ -144,14 +222,15 @@ public class MainActivity extends AppCompatActivity {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Contact contact = contacts.get(holder.getAdapterPosition());
-                    Intent intent = new Intent(MainActivity.this, EditContactActivity.class);
-                    String id = contact.getId();
-                    intent.putExtra("id", id);
-                    startActivity(intent);
+                    onContactEditListener.onContactEdit(holder.contact);
                 }
             });
-
+            holder.callImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onContactCallListener.onContactCall(holder.contact);
+                }
+            });
             return holder;
         }
 
@@ -160,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
             Contact contact = contacts.get(position);
             String photoPath = contact.getPhotoPath();
             if (photoPath != null) {
-                Picasso.with(getApplicationContext()).load(new File(photoPath))
+                Picasso.with(context).load(new File(photoPath))
                         .resize(holder.circleImageView.getLayoutParams().width, holder.circleImageView.getLayoutParams().height)
                         .centerCrop().transform(CropCircleTransformation.INSTANCE).into(holder.circleImageView);
             } else {
@@ -179,10 +258,6 @@ public class MainActivity extends AppCompatActivity {
         public void setContacts(ArrayList<Contact> contacts) {
             this.contacts.clear();
             this.contacts.addAll(contacts);
-        }
-
-        public Contact getContact(int position) {
-            return contacts.get(position);
         }
     }
 }
