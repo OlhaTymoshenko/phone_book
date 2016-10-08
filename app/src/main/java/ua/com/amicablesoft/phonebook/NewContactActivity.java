@@ -38,8 +38,8 @@ public class NewContactActivity extends AppCompatActivity
 
     private ImageView imageView;
     private String picturePath;
-    static final int PERMISSIONS_REQUEST = 1;
-    static final int REQUEST_PHOTO_CAPTURE = 0;
+    private static final int PERMISSIONS_REQUEST = 1;
+    private static final int REQUEST_PHOTO_CAPTURE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

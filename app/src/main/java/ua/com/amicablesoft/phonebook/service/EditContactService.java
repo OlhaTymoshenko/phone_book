@@ -21,7 +21,8 @@ public class EditContactService extends IntentService {
         String name = intent.getStringExtra("name");
         String lastName = intent.getStringExtra("last_name");
         String phone = intent.getStringExtra("phone");
+        String photoPath = intent.getStringExtra("photo_path");
         Repository repository = new Repository(getApplicationContext());
-        repository.updateContact(id, name, lastName, phone);
+        repository.updateContact(id, name, lastName, phone, photoPath);
     }
 }

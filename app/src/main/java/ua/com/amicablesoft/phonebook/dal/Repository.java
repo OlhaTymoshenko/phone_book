@@ -100,12 +100,15 @@ public class Repository {
         return contacts;
     }
 
-    public void updateContact(String id, String name, String lastName, String phone) {
+    public void updateContact(String id, String name, String lastName, String phone, String photoPath) {
         SQLiteDatabase database = phoneBookDBHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(PhoneBookContract.ContactEntry.COLUMN_NAME_CONTACT_NAME, name);
         values.put(PhoneBookContract.ContactEntry.COLUMN_NAME_CONTACT_LAST_NAME, lastName);
         values.put(PhoneBookContract.ContactEntry.COLUMN_NAME_CONTACT_PHONE, phone);
+        if (photoPath != null) {
+            values.put(PhoneBookContract.ContactEntry.COLUMN_NAME_CONTACT_PHOTO_PATH, photoPath);
+        }
         String whereClause = PhoneBookContract.ContactEntry.COLUMN_NAME_CONTACT_ID + " =?";
         String[] whereArgs = {id};
         database.update(PhoneBookContract.ContactEntry.TABLE_NAME, values, whereClause, whereArgs);
