@@ -19,5 +19,5 @@
     <string name="button_cancel">Cancel</string>
     <string name="snackbar_deleted_contact">Contact was deleted</string>
     <string name="snackbar_permissions">This action requires permissions</string>
-
+    <string name="title_empty_view">You have no contacts</string>
 </resources>

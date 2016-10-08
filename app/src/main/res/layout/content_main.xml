@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     android:id="@+id/content_main"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="ua.com.amicablesoft.phonebook.MainActivity"
     tools:showIn="@layout/activity_main">
@@ -17,4 +16,13 @@
         android:layout_height="match_parent"
         tools:listitem="@layout/item_for_recycle_view">
     </android.support.v7.widget.RecyclerView>
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/title_empty_view"
+        android:visibility="gone"
+        android:textAppearance="@style/EmptyViewTextFont"/>
+</FrameLayout>

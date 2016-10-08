@@ -22,4 +22,9 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="EmptyViewTextFont" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:textSize">28sp</item>
+    </style>
+
 </resources>

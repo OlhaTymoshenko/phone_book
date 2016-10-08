@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/item_text_view"
-        style="@style/ItemTextFont"
+        android:textAppearance="@style/ItemTextFont"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
@@ -29,11 +29,12 @@
     </TextView>
 
     <ImageView
-        android:id="@+id/call_image_view"
+        android:id="@+id/edit_image_view"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
+        android:scaleType="center"
         android:clickable="true"
-        android:src="@drawable/ic_call_grey600_24dp"/>
+        android:src="@drawable/ic_create_black_24dp"/>
 
 </LinearLayout>
