@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import ua.com.amicablesoft.phonebook.ContactsUpdatedEvent;
 import ua.com.amicablesoft.phonebook.model.Contact;
+import ua.com.amicablesoft.phonebook.model.User;
 
 /**
  * Created by lapa on 04.10.16.
@@ -123,5 +124,35 @@ public class Repository {
         database.delete(PhoneBookContract.ContactEntry.TABLE_NAME, whereClause, whereArgs);
         database.close();
         EventBus.getDefault().post(new ContactsUpdatedEvent());
+    }
+
+    public User findUser() {
+        SQLiteDatabase database = phoneBookDBHelper.getReadableDatabase();
+        Cursor cursor = database.query(
+                PhoneBookContract.UserEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+        User user = readUserFromCursor(cursor);
+        cursor.close();
+        database.close();
+        return user;
+    }
+
+    public User readUserFromCursor(Cursor cursor){
+        ArrayList<User> users = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            String login = cursor.getString(cursor.getColumnIndexOrThrow
+                    (PhoneBookContract.UserEntry.COLUMN_NAME_LOGIN));
+            String password = cursor.getString(cursor.getColumnIndexOrThrow
+                    (PhoneBookContract.UserEntry.COLUMN_NAME_PASSWORD));
+            User user = new User(login, password);
+            users.add(user);
+        }
+        return users.get(0);
     }
 }

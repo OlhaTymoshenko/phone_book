@@ -1,5 +1,6 @@
 package ua.com.amicablesoft.phonebook.dal;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -11,7 +12,7 @@ import static ua.com.amicablesoft.phonebook.dal.PhoneBookContract.ContactEntry.T
  */
 
 public class PhoneBookDBHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "PhoneBook.db";
 
     public PhoneBookDBHelper (Context context) {
@@ -27,6 +28,16 @@ public class PhoneBookDBHelper extends SQLiteOpenHelper {
                 PhoneBookContract.ContactEntry.COLUMN_NAME_CONTACT_PHONE + " TEXT NOT NULL, " +
                 PhoneBookContract.ContactEntry.COLUMN_NAME_CONTACT_PHOTO_PATH + " TEXT);";
         db.execSQL(SQL_CREATE_ITEMS_TABLE);
+
+        final String SQL_CREATE_USER_TABLE = "CREATE TABLE " + PhoneBookContract.UserEntry.TABLE_NAME + " (" +
+                PhoneBookContract.UserEntry.COLUMN_NAME_LOGIN + " TEXT NOT NULL, " +
+                PhoneBookContract.UserEntry.COLUMN_NAME_PASSWORD + " TEXT NOT NULL);";
+        db.execSQL(SQL_CREATE_USER_TABLE);
+
+        ContentValues values = new ContentValues();
+        values.put(PhoneBookContract.UserEntry.COLUMN_NAME_LOGIN, "admin");
+        values.put(PhoneBookContract.UserEntry.COLUMN_NAME_PASSWORD, "123456");
+        db.insert(PhoneBookContract.UserEntry.TABLE_NAME, null, values);
     }
 
     @Override

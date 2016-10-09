@@ -18,4 +18,10 @@ public final class PhoneBookContract {
         public static final String COLUMN_NAME_CONTACT_PHONE = "contact_phone";
         public static final String COLUMN_NAME_CONTACT_PHOTO_PATH = "contact_photo_path";
     }
+
+    public static abstract class UserEntry implements BaseColumns {
+        public static final String TABLE_NAME = "user";
+        public static final String COLUMN_NAME_LOGIN = "user_login";
+        public static final String COLUMN_NAME_PASSWORD = "user_password";
+    }
 }
