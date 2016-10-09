@@ -56,6 +56,8 @@ public class EditContactActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        final TextInputEditText phoneView = (TextInputEditText) findViewById(R.id.edit_phone_edit_text);
+        phoneView.addTextChangedListener(new PhoneNumberTextWatcher());
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
         imageView = (ImageView) findViewById(R.id.edit_contact_image_view);
@@ -266,7 +268,7 @@ public class EditContactActivity extends AppCompatActivity
     }
 
     private boolean isPhoneValid(String phone) {
-        return phone.length() == 10 || phone.length() == 13;
+        return phone.length() == 16;
     }
 
     private boolean isLastNameValid(String lastName) {

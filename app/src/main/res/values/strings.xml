@@ -2,6 +2,7 @@
     <string name="app_name">Phone Book</string>
     <string name="new_contact_activity_name">Add new contact</string>
     <string name="edit_contact_activity_name">Edit contact</string>
+    <string name="about_developer_activity_name">About developer</string>
     <string name="action_about">About</string>
     <string name="action_save">Save</string>
     <string name="action_done">Done</string>
@@ -25,4 +26,8 @@
     <string name="snackbar_deleted_contact">Contact was deleted</string>
     <string name="snackbar_permissions">This action requires permissions</string>
     <string name="title_empty_view">You have no contacts</string>
+    <string name="text_about">This application is developed by\nOlha Tymoshenko</string>
+    <string name="text_phone">Tel\n+380936977364</string>
+    <string name="linked_in">LinkedIn\n<a>https://www.linkedin.com/profile/view?id=278141229</a></string>
+    <string name="git_hub">GitHub\n<a>https://github.com/OlhaTymoshenko</a></string>
 </resources>

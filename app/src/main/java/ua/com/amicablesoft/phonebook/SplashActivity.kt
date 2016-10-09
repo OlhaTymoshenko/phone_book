@@ -1,5 +1,6 @@
 package ua.com.amicablesoft.phonebook
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -18,17 +19,23 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
-
-        val sceneRootView = findViewById(R.id.splash_scene_root) as ViewGroup
-        val sceneB = Scene.getSceneForLayout(sceneRootView, R.layout.activity_splash_scene_b, this)
-        Handler(Looper.getMainLooper()).postDelayed({
-            TransitionManager.go(sceneB)
-            val signInButton = findViewById(R.id.sign_in_button)
-            signInButton.setOnClickListener {
-                attemptSignIn()
-            }
-        }, 1500)
+        val preferences = getSharedPreferences("user", Context.MODE_PRIVATE)
+        if (preferences.contains("user")) {
+            intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            setContentView(R.layout.activity_splash)
+            val sceneRootView = findViewById(R.id.splash_scene_root) as ViewGroup
+            val sceneB = Scene.getSceneForLayout(sceneRootView, R.layout.activity_splash_scene_b, this)
+            Handler(Looper.getMainLooper()).postDelayed({
+                TransitionManager.go(sceneB)
+                val signInButton = findViewById(R.id.sign_in_button)
+                signInButton.setOnClickListener {
+                    attemptSignIn()
+                }
+            }, 1500)
+        }
 
     }
 
@@ -65,8 +72,11 @@ class SplashActivity : AppCompatActivity() {
         if (cancel) {
             focusView?.requestFocus()
         } else {
+            val preferences = getSharedPreferences("user", Context.MODE_PRIVATE)
+            preferences.edit().putString("user", "signed_in").apply()
             intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 }

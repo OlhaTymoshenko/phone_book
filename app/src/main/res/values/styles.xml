@@ -41,4 +41,14 @@
         <item name="android:textSize">32sp</item>
     </style>
 
+    <style name="AboutTextFont" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="InfoTextFont" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

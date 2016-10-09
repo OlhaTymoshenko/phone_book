@@ -150,6 +150,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_about) {
+            Intent intent = new Intent(MainActivity.this, AboutDeveloperActivity.class);
+            startActivity(intent);
             return true;
         }
 

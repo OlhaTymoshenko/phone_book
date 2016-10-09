@@ -50,6 +50,8 @@ public class NewContactActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        final TextInputEditText phoneView = (TextInputEditText) findViewById(R.id.phone_edit_text);
+        phoneView.addTextChangedListener(new PhoneNumberTextWatcher());
         imageView = (ImageView) findViewById(R.id.contact_image_view);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,7 +230,7 @@ public class NewContactActivity extends AppCompatActivity
     }
 
     private boolean isPhoneValid(String phone) {
-        return phone.length() == 10 || phone.length() == 13;
+        return phone.length() == 16;
     }
 
     private boolean isLastNameValid(String lastName) {
@@ -264,4 +266,5 @@ public class NewContactActivity extends AppCompatActivity
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Select photo"), CHOOSE_PHOTO);
     }
+
 }

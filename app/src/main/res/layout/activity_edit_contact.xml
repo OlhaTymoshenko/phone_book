@@ -111,7 +111,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="phone"
-                        android:maxLines="1"/>
+                        android:maxLength="16"/>
 
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
