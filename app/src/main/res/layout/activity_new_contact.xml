@@ -34,12 +34,35 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/contact_image_view"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                android:background="@color/colorLightPrimary"/>
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary">
+
+                <ImageView
+                    android:id="@+id/contact_placeholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/img_contact_placeholder"/>
+
+                <ImageView
+                    android:id="@+id/contact_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"/>
+
+                <ImageView
+                    android:id="@+id/camera_image_View"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/camera_margin"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="bottom|end"
+                    android:src="@drawable/ic_camera_alt_white_36dp"/>
+
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

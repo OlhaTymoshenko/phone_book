@@ -36,6 +36,7 @@ public class NewContactActivity extends AppCompatActivity
     private ImageView imageView;
     private String picturePath;
     private PhotoHelper photoHelper;
+    private ImageView placeholderImageView;
     private static final int PERMISSIONS_REQUEST = 1;
     private static final int REQUEST_PHOTO_CAPTURE = 0;
     private static final int CHOOSE_PHOTO = 1;
@@ -56,6 +57,7 @@ public class NewContactActivity extends AppCompatActivity
                 new ChangePhotoDialogFragment().show(getFragmentManager(), "single_choice");
             }
         });
+        placeholderImageView = (ImageView) findViewById(R.id.contact_placeholder);
         photoHelper = new PhotoHelper();
     }
 
@@ -135,6 +137,7 @@ public class NewContactActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
                 Picasso.with(getApplicationContext()).load(new File(picturePath))
                         .resize(0, imageView.getLayoutParams().height).into(imageView);
+                placeholderImageView.setVisibility(View.GONE);
             }
         }
         if (requestCode == CHOOSE_PHOTO) {
@@ -163,6 +166,7 @@ public class NewContactActivity extends AppCompatActivity
                 }
                 Picasso.with(getApplicationContext()).load(new File(picturePath))
                         .resize(0, imageView.getLayoutParams().height).into(imageView);
+                placeholderImageView.setVisibility(View.GONE);
             }
         }
     }
