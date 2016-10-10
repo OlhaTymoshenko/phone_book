@@ -1,9 +1,11 @@
-package ua.com.amicablesoft.phonebook;
+package ua.com.amicablesoft.phonebook.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+
+import ua.com.amicablesoft.phonebook.R;
 
 public class AboutDeveloperActivity extends AppCompatActivity {
 

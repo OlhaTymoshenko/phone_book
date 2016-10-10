@@ -1,4 +1,4 @@
-package ua.com.amicablesoft.phonebook;
+package ua.com.amicablesoft.phonebook.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

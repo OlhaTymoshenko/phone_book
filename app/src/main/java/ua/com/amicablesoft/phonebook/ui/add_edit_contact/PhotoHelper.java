@@ -1,4 +1,4 @@
-package ua.com.amicablesoft.phonebook;
+package ua.com.amicablesoft.phonebook.ui.add_edit_contact;
 
 import java.io.File;
 import java.io.FileInputStream;

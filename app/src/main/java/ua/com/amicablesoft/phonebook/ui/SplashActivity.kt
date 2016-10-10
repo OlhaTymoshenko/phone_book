@@ -1,4 +1,4 @@
-package ua.com.amicablesoft.phonebook
+package ua.com.amicablesoft.phonebook.ui
 
 import android.content.Context
 import android.content.Intent
@@ -13,6 +13,7 @@ import android.transition.Scene
 import android.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
+import ua.com.amicablesoft.phonebook.R
 import ua.com.amicablesoft.phonebook.dal.Repository
 
 class SplashActivity : AppCompatActivity() {

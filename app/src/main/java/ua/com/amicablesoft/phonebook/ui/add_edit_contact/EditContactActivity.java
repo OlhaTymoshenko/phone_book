@@ -1,4 +1,4 @@
-package ua.com.amicablesoft.phonebook;
+package ua.com.amicablesoft.phonebook.ui.add_edit_contact;
 
 import android.Manifest;
 import android.content.Intent;
@@ -29,6 +29,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import ua.com.amicablesoft.phonebook.utils.PhoneNumberTextWatcher;
+import ua.com.amicablesoft.phonebook.R;
+import ua.com.amicablesoft.phonebook.utils.URIUtils;
 import ua.com.amicablesoft.phonebook.dal.Repository;
 import ua.com.amicablesoft.phonebook.model.Contact;
 import ua.com.amicablesoft.phonebook.service.DeleteContactService;

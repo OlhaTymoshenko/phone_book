@@ -1,4 +1,4 @@
-package ua.com.amicablesoft.phonebook;
+package ua.com.amicablesoft.phonebook.utils;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,7 +9,7 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 /**
  * Created by lapa on 10.10.16.
  */
-class PhoneNumberTextWatcher implements TextWatcher {
+public class PhoneNumberTextWatcher implements TextWatcher {
     private boolean isInAfterTextChanged;
 
     @Override

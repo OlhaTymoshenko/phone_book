@@ -1,4 +1,4 @@
-package ua.com.amicablesoft.phonebook;
+package ua.com.amicablesoft.phonebook.utils;
 
 import android.annotation.SuppressLint;
 import android.content.ContentUris;

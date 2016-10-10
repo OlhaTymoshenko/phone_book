@@ -1,4 +1,4 @@
-package ua.com.amicablesoft.phonebook;
+package ua.com.amicablesoft.phonebook.ui;
 
 /**
  * Created by lapa on 04.10.16.

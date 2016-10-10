@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:tools="http://schemas.android.com/tools"
       xmlns:app="http://schemas.android.com/apk/res-auto"
-      tools:context="ua.com.amicablesoft.phonebook.NewContactActivity">
+      tools:context="ua.com.amicablesoft.phonebook.ui.add_edit_contact.NewContactActivity">
     <item
         android:id="@+id/action_save"
         android:title="@string/action_save"

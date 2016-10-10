@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ua.com.amicablesoft.phonebook.EditContactActivity"
+    tools:context="ua.com.amicablesoft.phonebook.ui.add_edit_contact.EditContactActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.design.widget.AppBarLayout

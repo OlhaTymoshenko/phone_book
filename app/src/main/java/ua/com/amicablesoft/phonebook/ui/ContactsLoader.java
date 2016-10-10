@@ -1,4 +1,4 @@
-package ua.com.amicablesoft.phonebook;
+package ua.com.amicablesoft.phonebook.ui;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;

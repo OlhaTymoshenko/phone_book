@@ -1,4 +1,4 @@
-package ua.com.amicablesoft.phonebook;
+package ua.com.amicablesoft.phonebook.ui;
 
 import android.Manifest;
 import android.app.LoaderManager;
@@ -33,6 +33,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import ua.com.amicablesoft.phonebook.ui.add_edit_contact.EditContactActivity;
+import ua.com.amicablesoft.phonebook.ui.add_edit_contact.NewContactActivity;
+import ua.com.amicablesoft.phonebook.utils.CropCircleTransformation;
+import ua.com.amicablesoft.phonebook.R;
 import ua.com.amicablesoft.phonebook.model.Contact;
 
 public class MainActivity extends AppCompatActivity {

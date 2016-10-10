@@ -9,7 +9,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
-import ua.com.amicablesoft.phonebook.ContactsUpdatedEvent;
+import ua.com.amicablesoft.phonebook.ui.ContactsUpdatedEvent;
 import ua.com.amicablesoft.phonebook.model.Contact;
 import ua.com.amicablesoft.phonebook.model.User;
 

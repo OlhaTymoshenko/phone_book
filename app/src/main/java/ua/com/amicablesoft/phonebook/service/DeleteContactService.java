@@ -3,7 +3,7 @@ package ua.com.amicablesoft.phonebook.service;
 import android.app.IntentService;
 import android.content.Intent;
 
-import ua.com.amicablesoft.phonebook.MainActivity;
+import ua.com.amicablesoft.phonebook.ui.MainActivity;
 import ua.com.amicablesoft.phonebook.dal.Repository;
 
 /**

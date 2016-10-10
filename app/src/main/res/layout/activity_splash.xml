@@ -10,6 +10,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/colorPrimary"
-    tools:context="ua.com.amicablesoft.phonebook.SplashActivity">
+    tools:context="ua.com.amicablesoft.phonebook.ui.SplashActivity">
     <include layout="@layout/activity_splash_scene_a"/>
 </FrameLayout>
