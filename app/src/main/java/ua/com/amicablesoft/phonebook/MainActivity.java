@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
             callToContact(contact);
             contact = null;
         } else {
-            Snackbar.make(findViewById(R.id.activity_new_contact), R.string.snackbar_permissions,
+            Snackbar.make(findViewById(R.id.activity_main), R.string.snackbar_permissions,
                     Snackbar.LENGTH_SHORT).show();
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void callToContact(Contact contact) {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:" + contact.getPhone()));
+        intent.setData(Uri.parse("tel:" + "+" + contact.getPhone()));
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
