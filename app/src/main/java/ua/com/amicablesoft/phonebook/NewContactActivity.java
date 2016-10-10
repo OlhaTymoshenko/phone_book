@@ -222,7 +222,7 @@ public class NewContactActivity extends AppCompatActivity
             Intent intent = new Intent(this, AddNewContactService.class);
             intent.putExtra("name", name);
             intent.putExtra("last_name", lastName);
-            intent.putExtra("phone", phone);
+            intent.putExtra("phone", phone.replaceAll("[\\+,\\s]", ""));
             intent.putExtra("photo_path", picturePath);
             startService(intent);
             finish();

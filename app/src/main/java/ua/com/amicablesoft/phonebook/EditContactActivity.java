@@ -260,7 +260,7 @@ public class EditContactActivity extends AppCompatActivity
             intent.putExtra("id", id);
             intent.putExtra("name", name);
             intent.putExtra("last_name", lastName);
-            intent.putExtra("phone", phone);
+            intent.putExtra("phone", phone.replaceAll("[\\+,\\s]", ""));
             intent.putExtra("photo_path", picturePath);
             startService(intent);
             finish();
